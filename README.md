@@ -7,7 +7,7 @@ extremely customizable and can be extended to incorporate all kinds of
 scripts designed for the very popular bottle.py web framework.
 
 Hobo is based on the wonderful software designed by Alexis Sellier named
-(toto)[http://www.cloudhead.io/toto], written in Ruby.
+[toto](http://www.cloudhead.io/toto), written in Ruby.
 
 ## Installation and Setup
 
