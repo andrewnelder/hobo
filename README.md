@@ -9,20 +9,19 @@ scripts designed for the very popular bottle.py web framework.
 Hobo is based on the wonderful software designed by Alexis Sellier named
 (toto)[http://www.cloudhead.io/toto], written in Ruby.
 
-
 ## Installation and Setup
 
 It's pretty much the easiest thing in the world to setup.  It can run as
-a standalone client simply calling:
+a standalone client by changing the heroku flag in the ```config.ini```
+file to 'off' and then simply calling:
 
 
 ### Deploy Locally
-
-'''
+```
 $ git clone git@github.com:andrewnelder/hobo.git
 $ cd hobo
 $ python hobo.py
-'''
+```
 
 That being said, it's designed for use with heroku.  All you need to do
 is:
