@@ -112,7 +112,6 @@ def process_blog_posts():
             else:                                   # Use first paragraph
                 summary = re.split(r'''[\r\n]{2}''', contents)[0]
             html_summary = markdown(summary)
-            html_summary = re.sub(r'''(?:<p>|</p>)''', '', html_summary)
 
             locator = '/%04d/%02d/%02d/%s'%(yy, mm, dd, slug, )
 

@@ -16,7 +16,12 @@
     </div>
     <div class="post-date">{{posts[key].get_date().strftime('%B %d, %Y')}}</div>
     <div class="post-author">{{posts[key].get_author()}}</div>
-    <div class="post-summary">{{!posts[key].get_summary()}}...  <a href="{{posts[key].get_locator()}}">more</a></div>
+    <div class="post-summary">
+      {{!posts[key].get_summary()}}
+      <div class="post-more-link">
+        <a href="{{posts[key].get_locator()}}">...more</a>
+      </div>
+    </div>
   </div>
 % end
 
