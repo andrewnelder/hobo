@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{{title}}: {{post[2]}}</title>
+  <title>{{title}}: {{post.get_title()}}</title>
 </head>
 <body>
 <div class="post">
-  <div class="post-date">{{post[1]}}</div>
-  <div class="post-title">{{post[2]}}</div>
-  <div class="post-author">{{post[3]}}</div>
-  <div class="post-body">{{!post[4]}}</div>
+  <div class="post-date">{{post.get_date().strftime('%B %d, %Y')}}</div>
+  <div class="post-title">{{post.get_title()}}</div>
+  <div class="post-author">{{post.get_author()}}</div>
+  <div class="post-body">{{!post.get_contents()}}</div>
 </div>
 Powered by <a href="http://www.littlestblog.com">hobo</a>.
 </body>

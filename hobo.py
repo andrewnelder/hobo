@@ -7,12 +7,13 @@
 import logging
 import re
 import os
-import sqlite3
+import datetime
 
 from ConfigParser import ConfigParser
 
+from lib.blogpost import BlogPost
 from lib.markdown2 import markdown
-from lib.bottle import route, run, view, template, error, static_file
+from lib.bottle import route, run, view, template, error, static_file, abort
 
 # I N I T I A L I Z A T I O N #################################################
 
@@ -26,49 +27,25 @@ LOGGER.addHandler(ch)
 RE_VALID_FILE_EXTENSIONS = re.compile(r'''(?:.md|.markdown|.txt)$''')
 RE_ARTICLE_TITLE = re.compile(r'''(?:\:title )(.*?)[\n\r]''')
 
-# Database Queries
-Q_CREATE_TABLE = \
-    """CREATE TABLE posts (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT,
-    title TEXT, author TEXT, summary TEXT, body TEXT)"""
-Q_INSERT_POST = \
-    """INSERT INTO posts (date, title, author, summary, body)
-    VALUES (?, ?, ?, ?, ?)"""
-Q_SELECT_ALL_POSTS = \
-    """SELECT id, date, title, author, summary FROM posts ORDER BY id DESC"""
-Q_SELECT_POST = \
-    """SELECT id, date, title, author, body FROM posts WHERE id = ?"""
-
-# Database
-open('hobo.db', 'w').close()
-CONNECTION = sqlite3.connect('hobo.db')
-
 # Constants
 CONFIG = ConfigParser({
         'title': 'The Littlest Blog Engine', 
         'subtitle': '',
         'postsperpage': 15,
         'author': 'Hobo' ,
-        'summarydelim': '~~'})
+        'summarydelim': '~~',
+        'heroku': 'on'})
 CONFIG.read('config.ini')
 TITLE = CONFIG.get('blog', 'title')
 SUBTITLE = CONFIG.get('blog', 'subtitle')
 POSTS_PER_PAGE = CONFIG.getint('blog', 'postsperpage')
 AUTHOR = CONFIG.get('blog', 'author')
 SUMMARY_DELIM = CONFIG.get('blog', 'summarydelim')
-POSTS = []
+HEROKU = CONFIG.getboolean('blog', 'heroku')
+POSTS = {}
+KEY_LIST = []
 
 # F U N C T I O N S ###########################################################
-
-def setup_database():
-    '''
-    Creates a fresh table in the database.
-
-    NOTE: This is only run once -- when the server starts.
-    '''
-    cursor = CONNECTION.cursor()
-    cursor.execute(Q_CREATE_TABLE)
-    CONNECTION.commit()
-    cursor.close()
 
 def process_blog_posts():
     '''
@@ -79,8 +56,8 @@ def process_blog_posts():
     NOTE: This is only run once -- when the server starts.
     '''
 
-    # Add cursor to database
-    cursor = CONNECTION.cursor()
+    global POSTS
+    global KEY_LIST
 
     # Open every blog post
     path = 'posts/'
@@ -109,8 +86,9 @@ def process_blog_posts():
             contents = file_handle.read().decode('utf-8')
 
             # Extract metadata
-            article_title = ' '.join(input_file.split('-')[3:])
-            article_title = RE_VALID_FILE_EXTENSIONS.sub('', article_title)
+            slug = '-'.join(input_file.split('-')[3:])
+            slug = RE_VALID_FILE_EXTENSIONS.sub('', slug)
+            article_title = slug
             try:
                 article_title = RE_ARTICLE_TITLE.findall(contents)[0]
                 contents = RE_ARTICLE_TITLE.sub('', contents)
@@ -135,45 +113,52 @@ def process_blog_posts():
                 summary = re.split(r'''[\r\n]{2}''', contents)[0]
             html_summary = markdown(summary)
 
+            locator = '/%04d/%02d/%02d/%s'%(yy, mm, dd, slug, )
+
             # Enter the file into the database
             html_contents = markdown(contents)
-            cursor.execute(Q_INSERT_POST, ('%d-%d-%d'%(yy,mm,dd,), 
-                article_title, AUTHOR, html_summary, html_contents))
+            POSTS[locator] = \
+                BlogPost(\
+                    date = datetime.date(yy, mm, dd),\
+                    title = article_title,\
+                    author = AUTHOR,\
+                    summary = html_summary,\
+                    contents = html_contents,\
+                    locator = locator\
+                    )
 
             # Remove the file
             file_handle.close()
 
-    CONNECTION.commit()
-    cursor.close()
-
-def place_posts_in_memory():
-    cursor = CONNECTION.cursor()
-    cursor.execute(Q_SELECT_ALL_POSTS)
-    global POSTS
-    POSTS = cursor.fetchall()
-    cursor.close()
-
+    KEY_LIST = POSTS.keys()
+    KEY_LIST.sort(reverse=True)
 
 # P A G E   R O U T I N G #####################################################
 
 @route('/')
 @route('/<page:int>')
 @view('index')
-def index(page=0):
-    return { 'title': TITLE, 'page': page, 
-             'posts': POSTS[page*POSTS_PER_PAGE : (page+1)*POSTS_PER_PAGE],
+def index(page=1):
+
+    # Convert page numbers to start at 1 instead of 0
+    page = page-1
+
+    return { 'title': TITLE, 'page': page,
+             'key_list': KEY_LIST[page*POSTS_PER_PAGE : \
+                 (page+1)*POSTS_PER_PAGE],
+             'posts': POSTS,
              'has_prev': (page > 0),
              'has_next': (len(POSTS) > (page+1)*POSTS_PER_PAGE),
             }
 
-@route('/r/<postid:int>')
+@route('/<yy:int>/<mm:int>/<dd:int>/<slug>')
 @view('readpost')
-def readpost(postid):
-    cursor = CONNECTION.cursor()
-    cursor.execute(Q_SELECT_POST, (postid,))
-    post = cursor.fetchone()
-    return { 'title': TITLE, 
-             'post': post }
+def readpost(yy,mm,dd,slug):
+    locator = '/%04d/%02d/%02d/%s'%(yy,mm,dd,slug,)
+    if not POSTS.has_key(locator):
+        abort(404, 'Article not found!')
+    post = POSTS[locator]
+    return { 'title': TITLE, 'post': post }
 
 @route('/files/<filepath:path>')
 @route('/static/<filepath:path>')
@@ -192,10 +177,11 @@ def error404(code):
 
 # E X E C U T I O N ###########################################################
 
-setup_database()
 process_blog_posts()
-place_posts_in_memory()
-run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+if HEROKU:
+    run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+else:
+    run(host="localhost", port=8080)
 
 # E N D   O F   F I L E #######################################################
 
