@@ -179,7 +179,7 @@ def error404(code):
 
 process_blog_posts()
 if HEROKU:
-    run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    run(host="0.0.0.0", port=int(os.environ.get("PORT", 80)))
 else:
     run(host="localhost", port=8080)
 
