@@ -133,11 +133,12 @@ def process_blog_posts():
                 contents = re.sub(SUMMARY_DELIM, '', contents)
             else:                                   # Use first paragraph
                 summary = re.split(r'''[\r\n]{2}''', contents)[0]
+            html_summary = markdown(summary)
 
             # Enter the file into the database
             html_contents = markdown(contents)
             cursor.execute(Q_INSERT_POST, ('%d-%d-%d'%(yy,mm,dd,), 
-                article_title, AUTHOR, summary, html_contents))
+                article_title, AUTHOR, html_summary, html_contents))
 
             # Remove the file
             file_handle.close()
@@ -194,7 +195,7 @@ def error404(code):
 setup_database()
 process_blog_posts()
 place_posts_in_memory()
-run(host='localhost', port=8080)
+run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 # E N D   O F   F I L E #######################################################
 
