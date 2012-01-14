@@ -29,7 +29,7 @@ RE_ARTICLE_TITLE = re.compile(r'''(?:\:title )(.*?)[\n\r]''')
 
 # Constants
 CONFIG = ConfigParser({
-        'title': 'The Littlest Blog Engine', 
+        'title': 'The Littlest Blog Engine',
         'subtitle': '',
         'postsperpage': 15,
         'author': 'Hobo' ,
