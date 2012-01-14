@@ -1,0 +1,71 @@
+/*
+ * Primary Color: #E9D4C2 #B1A59B #9B6B43 #F4E3D5 #F4E8DE
+ * Secondary Color: #748C8C #5D6A6A #285D5D #ADC5C5 #B3C5C5
+ */
+
+body {
+  font-family: 'Oldenburg', cursive;
+  background: #F4E8DE;
+}
+
+a {
+  color: #748C8C;
+  text-decoration: none;
+}
+
+#body-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+}
+
+#blog-title {
+  font-size: 3em;
+  margin: 0px 0px 20px 0px;
+}
+
+#blog-title a {
+  color: #000;
+}
+
+#page-navigation {
+  text-align: center;
+}
+
+#powered-by {
+  text-align: center;
+  margin: 10px 0px 0px 0px;
+}
+
+.post {
+  postition: relative;
+}
+
+.post-date {
+  text-align: right;
+  font-size: 10px;
+  float: right;
+  margin: 10px 0px 0px 0px;
+}
+
+.post-title {
+  font-family: 'Overlock SC', cursive;
+  font-size: 2em;
+  color: #9B6B43;
+  float: left;
+}
+
+.post-title a {
+  color: #9B6B43;
+}
+
+.post-author {
+  clear: both;
+  font-size: 10px;
+  color: #808080;
+}
+
+.post-summary {
+  clear: both;
+  margin: 5px 0px 30px 0px;
+}
