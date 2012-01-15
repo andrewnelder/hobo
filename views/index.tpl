@@ -2,8 +2,6 @@
 <html>
 <head>
   <title>{{title}}</title>
-  <link href='http://fonts.googleapis.com/css?family=Overlock+SC' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Oldenburg' rel='stylesheet' type='text/css'>
   <link href="/static/styles/theballoonist.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>

@@ -34,7 +34,8 @@ CONFIG = ConfigParser({
         'postsperpage': 15,
         'author': 'Hobo' ,
         'summarydelim': '~~',
-        'heroku': 'on'})
+        'heroku': 'on',
+        'disqus_shortname': ''})
 CONFIG.read('config.ini')
 TITLE = CONFIG.get('blog', 'title')
 SUBTITLE = CONFIG.get('blog', 'subtitle')
@@ -42,6 +43,7 @@ POSTS_PER_PAGE = CONFIG.getint('blog', 'postsperpage')
 AUTHOR = CONFIG.get('blog', 'author')
 SUMMARY_DELIM = CONFIG.get('blog', 'summarydelim')
 HEROKU = CONFIG.getboolean('blog', 'heroku')
+DISQUS_SHORTNAME = CONFIG.get('blog', 'disqus_shortname')
 POSTS = {}
 KEY_LIST = []
 
@@ -158,7 +160,10 @@ def readpost(yy,mm,dd,slug):
     if not POSTS.has_key(locator):
         abort(404, 'Article not found!')
     post = POSTS[locator]
-    return { 'title': TITLE, 'post': post }
+    return { 'title': TITLE,
+             'post': post,
+             'disqus_shortname': DISQUS_SHORTNAME,
+            }
 
 @route('/files/<filepath:path>')
 @route('/static/<filepath:path>')
