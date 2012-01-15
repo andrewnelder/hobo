@@ -12,6 +12,15 @@ special thanks goes to [clownfart](http://www.github.com/clownfart) for
 his amazing work on
 [markdown.css](https://github.com/clownfart/Markdown-CSS).
 
+## Features
+
+- About 300kb in size.
+- No extra dependencies or installations.
+- Easy to deploy.
+- No knowledge of HTML necessary.
+- Pre-packaged with a stylish theme called [theballoonist.css](http://www.imdb.com/title/tt0633266/).
+- No databases.
+
 ## Installation and Setup
 
 It's pretty much the easiest thing in the world to setup.  It can run as
@@ -71,5 +80,4 @@ $ git commit -am 'Added a new blog post.'
 $ git push heroku master
 ```
 
-Copyright (c) 2012 Andrew Nelder.  Licensed under 
-[CC A-NC-SA 3.0](http://creativecommons.org/licenses/by-nc-sa/3.0/).
+Copyright (c) 2012 Andrew Nelder.  Licensed under the MIT License.
