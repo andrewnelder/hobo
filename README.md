@@ -68,3 +68,4 @@ $ git commit -am 'Added a new blog post.'
 $ git push heroku master
 ```
 
+Copyright (c) 2012 Andrew Nelder
