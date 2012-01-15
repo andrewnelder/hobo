@@ -71,9 +71,5 @@ $ git commit -am 'Added a new blog post.'
 $ git push heroku master
 ```
 
-<a rel="license"
-href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img
-alt="Creative Commons License" style="border-width:0"
-src="http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png" /></a>
-
-Copyright (c) 2012 Andrew Nelder
+Copyright (c) 2012 Andrew Nelder.  Licensed under 
+[CC A-NC-SA 3.0](http://creativecommons.org/licenses/by-nc-sa/3.0/).
