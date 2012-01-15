@@ -32,7 +32,7 @@ is:
 ```
 $ git clone git@github.com:andrewnelder/hobo.git personal-blog
 $ cd personal-blog
-$ heroku create personal-blog
+$ heroku create --stack cedar personal-blog
 $ git push heroku master
 ```
 
