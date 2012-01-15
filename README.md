@@ -61,6 +61,7 @@ $ 1984-10-21-good-books-are-hard-to-find.md
 
 Then put it on heroku!
 
+### Upload Changes to Heroku
 ```
 $ git add .
 $ git commit -am 'Added a new blog post.'
