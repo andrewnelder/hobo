@@ -31,7 +31,7 @@
 </div>
 
 <div id="powered-by">
-<small>Powered by <a href="http://www.littlestblog.com/">hobo</a>.</small>
+<small>Powered by <a href="http://www.thelittlesthobo.com/">hobo</a>.</small>
 </div>
 
 </div>
