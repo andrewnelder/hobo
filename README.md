@@ -12,6 +12,8 @@ special thanks goes to [clownfart](http://www.github.com/clownfart) for
 his amazing work on
 [markdown.css](https://github.com/clownfart/Markdown-CSS) which was used as a framework for the primary css-theme.
 
+The name Hobo is the name of the canine protagonist from [The Littlest Hobo](http://en.wikipedia.org/wiki/The_Littlest_Hobo).
+
 ## Features
 
 - About 300kb in size.
