@@ -10,7 +10,7 @@ Hobo is based on the wonderful software designed by Alexis Sellier named
 [toto](http://www.cloudhead.io/toto), written in Ruby.  Additionally,
 special thanks goes to [clownfart](http://www.github.com/clownfart) for
 his amazing work on
-[markdown.css](https://github.com/clownfart/Markdown-CSS).
+[markdown.css](https://github.com/clownfart/Markdown-CSS) which was used as a framework for the primary css-theme.
 
 ## Features
 
@@ -20,6 +20,8 @@ his amazing work on
 - No knowledge of HTML necessary.
 - Pre-packaged with a stylish theme called [theballoonist.css](http://www.imdb.com/title/tt0633266/).
 - No databases.
+- Supports plain-text, html, or [markdown](http://daringfireball.net/projects/markdown/).
+- Supports static file serving (images, videos, documents, etc.).
 
 ## Installation and Setup
 
