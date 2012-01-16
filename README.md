@@ -20,6 +20,7 @@ his amazing work on
 - No knowledge of HTML necessary.
 - Pre-packaged with a stylish theme called [theballoonist.css](http://www.imdb.com/title/tt0633266/).
 - No databases.
+- Out-of-the-box support for pagination (15-posts per page by default).
 - Supports plain-text, html, or [markdown](http://daringfireball.net/projects/markdown/).
 - Supports static file serving (images, videos, documents, etc.).
 
