@@ -20,6 +20,7 @@ his amazing work on
 - No knowledge of HTML necessary.
 - Pre-packaged with a stylish theme called [theballoonist.css](http://www.imdb.com/title/tt0633266/).
 - No databases.
+- Easily modified templates that use [SimpleTemplate](http://bottlepy.org/docs/dev/stpl.html#simpletemplate-syntax) included in the ```/views``` directory.
 - Out-of-the-box support for pagination (15-posts per page by default).
 - Supports plain-text, html, or [markdown](http://daringfireball.net/projects/markdown/).
 - Supports static file serving (images, videos, documents, etc.).
