@@ -89,7 +89,7 @@ def process_blog_posts():
             contents = file_handle.read().decode('utf-8')
 
             # Extract metadata
-            slug = '-'.join(input_file.split('-')[3:])
+            slug = input_file.split('-', 3)[-1]
             slug = RE_VALID_FILE_EXTENSIONS.sub('', slug)
             article_title = slug
             try:
