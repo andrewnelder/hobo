@@ -3,7 +3,9 @@
 #                  See LICENSE.txt for full details.                          #
 ###############################################################################
 
+
 # I M P O R T S ###############################################################
+
 
 import logging
 import re
@@ -16,7 +18,9 @@ from lib.blogpost import BlogPost
 from lib.markdown2 import markdown
 from lib.bottle import route, run, view, template, error, static_file, abort
 
+
 # I N I T I A L I Z A T I O N #################################################
+
 
 # Logger
 ch = logging.StreamHandler()
@@ -33,7 +37,7 @@ CONFIG = ConfigParser({
         'title': 'The Littlest Blog Engine',
         'subtitle': '',
         'postsperpage': 15,
-        'author': 'Hobo' ,
+        'author': 'Hobo',
         'summarydelim': '~~',
         'heroku': 'on',
         'disqus_shortname': ''})
@@ -48,7 +52,9 @@ DISQUS_SHORTNAME = CONFIG.get('blog', 'disqus_shortname')
 POSTS = {}
 KEY_LIST = []
 
+
 # F U N C T I O N S ###########################################################
+
 
 def process_blog_posts():
     '''
@@ -70,17 +76,17 @@ def process_blog_posts():
             # Extract date from filename
             try:
                 (yy, mm, dd) = input_file.split('-')[:3]
-                yy = int('20'+yy) if len(yy) is 2 else int(yy)
+                yy = int('20' + yy) if len(yy) is 2 else int(yy)
                 mm = int(mm)
                 dd = int(dd)
             except:
-                LOGGER.warning('Ignoring file <%s>.  Invalid formatting.'%
+                LOGGER.warning('Ignoring file <%s>.  Invalid formatting.' %
                         (input_file,))
                 continue
 
             # Validate date
             if yy > 2500 or mm > 12 or dd > 31:
-                LOGGER.warning('Ignoring file <%s>.  Invalid date range.'%
+                LOGGER.warning('Ignoring file <%s>.  Invalid date range.' %
                         (input_file,))
                 continue
 
@@ -96,7 +102,7 @@ def process_blog_posts():
                 article_title = RE_ARTICLE_TITLE.findall(contents)[0]
                 contents = RE_ARTICLE_TITLE.sub('', contents)
             except:
-                LOGGER.warning('Ignoring file <%s>.  Invalid metadata.'%
+                LOGGER.warning('Ignoring file <%s>.  Invalid metadata.' %
                         (input_file,))
                 continue
 
@@ -116,18 +122,18 @@ def process_blog_posts():
                 summary = re.split(r'''[\r\n]{2}''', contents)[0]
             html_summary = markdown(summary)
 
-            locator = '/%04d/%02d/%02d/%s'%(yy, mm, dd, slug, )
+            locator = '/%04d/%02d/%02d/%s' % (yy, mm, dd, slug, )
 
             # Enter the file into the database
             html_contents = markdown(contents)
             POSTS[locator] = \
                 BlogPost(\
-                    date = datetime.date(yy, mm, dd),\
-                    title = article_title,\
-                    author = AUTHOR,\
-                    summary = html_summary,\
-                    contents = html_contents,\
-                    locator = locator\
+                    date=datetime.date(yy, mm, dd),\
+                    title=article_title,\
+                    author=AUTHOR,\
+                    summary=html_summary,\
+                    contents=html_contents,\
+                    locator=locator\
                     )
 
             # Remove the file
@@ -136,58 +142,64 @@ def process_blog_posts():
     KEY_LIST = POSTS.keys()
     KEY_LIST.sort(reverse=True)
 
+
 # P A G E   R O U T I N G #####################################################
+
 
 @route('/')
 @route('/<page:int>')
 @view('index')
-def index(page=1):
+def index(page=0):
 
-    # Convert page numbers to start at 1 instead of 0
-    page = page-1
+    posts = [POSTS[key] for key in \
+            KEY_LIST[page * POSTS_PER_PAGE:(page + 1) * POSTS_PER_PAGE]]
 
-    return { 'title': TITLE, 'page': page,
-             'key_list': KEY_LIST[page*POSTS_PER_PAGE : \
-                 (page+1)*POSTS_PER_PAGE],
-             'posts': POSTS,
-             'has_prev': (page > 0),
-             'has_next': (len(POSTS) > (page+1)*POSTS_PER_PAGE),
-            }
+    return {'title': TITLE,
+            'page': page,
+            'posts': posts,
+            'has_prev': (page > 0),
+            'has_next': (len(POSTS) > (page + 1) * POSTS_PER_PAGE)}
+
 
 @route('/<yy:int>/<mm:int>/<dd:int>/<slug>')
 @view('readpost')
-def readpost(yy,mm,dd,slug):
-    locator = '/%04d/%02d/%02d/%s'%(yy,mm,dd,slug,)
-    if not POSTS.has_key(locator):
+def readpost(yy, mm, dd, slug):
+    locator = '/%04d/%02d/%02d/%s' % (yy, mm, dd, slug, )
+    if locator not in POSTS:
         abort(404, 'Article not found!')
     post = POSTS[locator]
-    return { 'title': TITLE,
-             'post': post,
-             'disqus_shortname': DISQUS_SHORTNAME,
-            }
+    return {'title': TITLE,
+            'post': post,
+            'disqus_shortname': DISQUS_SHORTNAME}
+
 
 @route('/files/<filepath:path>')
 @route('/static/<filepath:path>')
 def server_static(filepath):
     return static_file(filepath, root='files')
 
+
 @error(403)
 @view('error')
-def error403(code):
-    return dict()
+def error403(code=None):
+    return {'code': code}
+
 
 @error(404)
 @view('error')
-def error404(code):
-    return dict()
+def error404(code=None):
+    return {'code': code}
+
 
 # E X E C U T I O N ###########################################################
+
 
 process_blog_posts()
 if HEROKU:
     run(host="0.0.0.0", port=int(os.environ.get("PORT", 80)))
 else:
     run(host="localhost", port=8080)
+
 
 # E N D   O F   F I L E #######################################################
 

@@ -7,17 +7,17 @@
 <body>
 <div id="body-wrapper">
 <div id="blog-title"><a href="/">{{title}}</a></div>
-% for key in key_list:
+% for post in posts:
   <div class="post">
     <div class="post-title">
-      <a href="{{posts[key].get_locator()}}">{{posts[key].get_title()}}</a>
+      <a href="{{post.get_locator()}}">{{post.get_title()}}</a>
     </div>
-    <div class="post-date">{{posts[key].get_date().strftime('%B %d, %Y')}}</div>
-    <div class="post-author">{{posts[key].get_author()}}</div>
+    <div class="post-date">{{post.get_date().strftime('%B %d, %Y')}}</div>
+    <div class="post-author">{{post.get_author()}}</div>
     <div class="post-summary">
-      {{!posts[key].get_summary()}}
+      {{!post.get_summary()}}
       <div class="post-more-link">
-        <a href="{{posts[key].get_locator()}}">...more</a>
+        <a href="{{post.get_locator()}}">...more</a>
       </div>
     </div>
   </div>
