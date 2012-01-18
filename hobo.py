@@ -179,6 +179,11 @@ def server_static(filepath):
     return static_file(filepath, root='files')
 
 
+@route('/favicon.ico')
+def favicon():
+    return static_file('favicon.ico', root='files')
+
+
 @error(403)
 @view('error')
 def error403(code=None):
