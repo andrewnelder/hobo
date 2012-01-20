@@ -65,9 +65,6 @@ def process_blog_posts():
     NOTE: This is only run once -- when the server starts.
     '''
 
-    global POSTS
-    global KEY_LIST
-
     # Open every blog post
     path = 'posts/'
     for input_file in os.listdir(path):
@@ -139,7 +136,7 @@ def process_blog_posts():
             # Remove the file
             file_handle.close()
 
-    KEY_LIST = POSTS.keys()
+    KEY_LIST.extend(POSTS.keys())
     KEY_LIST.sort(reverse=True)
 
 

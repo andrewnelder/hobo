@@ -1,26 +1,32 @@
 class BlogPost(object):
     def __init__(self, date, title, author, summary, contents, locator):
-        self.__date = date
-        self.__title = title
-        self.__author = author
-        self.__summary = summary
-        self.__contents = contents
-        self.__locator = locator
+        self._date = date
+        self._title = title
+        self._author = author
+        self._summary = summary
+        self._contents = contents
+        self._locator = locator
 
-    def get_date(self):
-        return self.__date
+    @property
+    def date(self):
+        return self._date
 
-    def get_title(self):
-        return self.__title
+    @property
+    def title(self):
+        return self._title
 
-    def get_author(self):
-        return self.__author
+    @property
+    def author(self):
+        return self._author
 
-    def get_summary(self):
-        return self.__summary
+    @property
+    def summary(self):
+        return self._summary
 
-    def get_contents(self):
-        return self.__contents
+    @property
+    def contents(self):
+        return self._contents
 
-    def get_locator(self):
-        return self.__locator
+    @property
+    def locator(self):
+        return self._locator

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{{title}}: {{post.get_title()}}</title>
+  <title>{{title}}: {{post.title}}</title>
   <link href="/static/styles/theballoonist.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -11,10 +11,10 @@
 <div id="blog-title"><a href="/">{{title}}</a></div>
 
 <div class="post">
-  <div class="post-title">{{post.get_title()}}</div>
-  <div class="post-date">{{post.get_date().strftime('%B %d, %Y')}}</div>
-  <div class="post-author">{{post.get_author()}}</div>
-  <div class="post-body">{{!post.get_contents()}}</div>
+  <div class="post-title">{{post.title}}</div>
+  <div class="post-date">{{post.date.strftime('%B %d, %Y')}}</div>
+  <div class="post-author">{{post.author}}</div>
+  <div class="post-body">{{!post.contents}}</div>
 </div>
 
 % if disqus_shortname:
