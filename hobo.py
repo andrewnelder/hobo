@@ -31,6 +31,7 @@ LOGGER.addHandler(ch)
 # Regular Expressions
 RE_VALID_FILE_EXTENSIONS = re.compile(r'''(?:.md|.markdown|.txt)$''')
 RE_ARTICLE_TITLE = re.compile(r'''(?:\:title )(.*?)[\n\r]''')
+RE_ARTICLE_AUTHOR = re.compile(r'''(?:\:author )(.*?)[\n\r]''')
 
 # Constants
 POSTS = {}
@@ -91,17 +92,13 @@ def process_blog_posts():
             file_handle = open(path + input_file, 'r')
             contents = file_handle.read().decode('utf-8')
 
-            # Extract metadata
+            # Find the slug
             slug = input_file.split('-', 3)[-1]
             slug = RE_VALID_FILE_EXTENSIONS.sub('', slug)
-            article_title = slug
-            try:
-                article_title = RE_ARTICLE_TITLE.findall(contents)[0]
-                contents = RE_ARTICLE_TITLE.sub('', contents)
-            except:
-                LOGGER.warning('Ignoring file <%s>.  Invalid metadata.' %
-                        (input_file,))
-                continue
+
+            # Extract metadata
+            contents, meta = extract_metadata(contents, \
+                    defaults={'article_title': slug, 'article_author': AUTHOR})
 
             # Strip the contents of supurfluous whitespace -- now that the
             # metatags have been removed.
@@ -126,8 +123,8 @@ def process_blog_posts():
             POSTS[locator] = \
                 BlogPost(\
                     date=datetime.date(yy, mm, dd),\
-                    title=article_title,\
-                    author=AUTHOR,\
+                    title=meta['article_title'],\
+                    author=meta['article_author'],\
                     summary=html_summary,\
                     contents=html_contents,\
                     locator=locator\
@@ -138,6 +135,47 @@ def process_blog_posts():
 
     KEY_LIST.extend(POSTS.keys())
     KEY_LIST.sort(reverse=True)
+
+
+def extract_metadata(contents, defaults={}):
+    '''
+    Extracts the metadata from the top of a blog post's file contents.
+
+    @param contents:
+        The flatfile contents of a blog post from the post directory.
+    @type contents:
+        String
+
+    @param defaults:
+        Defaults for the metadata.
+    @type defaults:
+        Dictionary
+
+    @return:
+        The modified contents of the blog post and the metadata.
+    @rtype:
+        String, Dictionary
+    '''
+
+    meta = {}
+
+    # Populate with blanks (if needed)
+    meta['article_title'] = ''
+    meta['article_author'] = ''
+
+    # Repopulate with defaults
+    meta.update(defaults)
+
+    # Find metadata in contents and filter contents
+    if RE_ARTICLE_TITLE.search(contents):
+        meta['article_title'] = RE_ARTICLE_TITLE.findall(contents)[0]
+        contents = RE_ARTICLE_TITLE.sub('', contents)
+
+    if RE_ARTICLE_AUTHOR.search(contents):
+        meta['article_author'] = RE_ARTICLE_AUTHOR.findall(contents)[0]
+        contents = RE_ARTICLE_AUTHOR.sub('', contents)
+
+    return contents, meta
 
 
 # P A G E   R O U T I N G #####################################################

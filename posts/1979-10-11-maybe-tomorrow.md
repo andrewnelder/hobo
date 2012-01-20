@@ -1,4 +1,5 @@
 :title Maybe Tomorrow
+:author Terry Bush
 
 There’s a voice that keeps on calling me<br />
 Down the road is where I’ll always be
