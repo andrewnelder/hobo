@@ -58,7 +58,7 @@ $ git push heroku master
 ## Usage
 
 Once you've got everything nicely configured -- the next step is easy.
-Take a peek in the ```config.ini``` file and make sure everything there
+Take a peek in the ```blog_config.py``` file and make sure everything there
 adds up.  All that really needs to be configured are the 'title' and
 'author' fields.
 
