@@ -12,7 +12,7 @@ import re
 import os
 import datetime
 
-from ConfigParser import ConfigParser
+import blog_config
 
 from lib.blogpost import BlogPost
 from lib.markdown2 import markdown
@@ -33,24 +33,24 @@ RE_VALID_FILE_EXTENSIONS = re.compile(r'''(?:.md|.markdown|.txt)$''')
 RE_ARTICLE_TITLE = re.compile(r'''(?:\:title )(.*?)[\n\r]''')
 
 # Constants
-CONFIG = ConfigParser({
-        'title': 'The Littlest Blog Engine',
-        'subtitle': '',
-        'postsperpage': 15,
-        'author': 'Hobo',
-        'summarydelim': '~~',
-        'heroku': 'on',
-        'disqus_shortname': ''})
-CONFIG.read('config.ini')
-TITLE = CONFIG.get('blog', 'title')
-SUBTITLE = CONFIG.get('blog', 'subtitle')
-POSTS_PER_PAGE = CONFIG.getint('blog', 'postsperpage')
-AUTHOR = CONFIG.get('blog', 'author')
-SUMMARY_DELIM = CONFIG.get('blog', 'summarydelim')
-HEROKU = CONFIG.getboolean('blog', 'heroku')
-DISQUS_SHORTNAME = CONFIG.get('blog', 'disqus_shortname')
 POSTS = {}
 KEY_LIST = []
+
+# Configuration Parameters w/ Defaults
+TITLE = blog_config.TITLE \
+        if hasattr(blog_config, 'TITLE') else ''
+SUBTITLE = blog_config.SUBTITLE \
+        if hasattr(blog_config, 'SUBTITLE') else ''
+POSTS_PER_PAGE = blog_config.POSTS_PER_PAGE \
+        if hasattr(blog_config, 'POSTS_PER_PAGE') else 15
+AUTHOR = blog_config.AUTHOR \
+        if hasattr(blog_config, 'AUTHOR') else ''
+SUMMARY_DELIMITER = blog_config.SUMMARY_DELIMITER \
+        if hasattr(blog_config, 'SUMMARY_DELIMITER') else '~~'
+USE_HEROKU = blog_config.USE_HEROKU \
+        if hasattr(blog_config, 'USE_HEROKU') else True
+DISQUS_SHORTNAME = blog_config.DISQUS_SHORTNAME \
+        if hasattr(blog_config, 'DISQUS_SHORTNAME') else ''
 
 
 # F U N C T I O N S ###########################################################
@@ -112,9 +112,9 @@ def process_blog_posts():
             # form the summary, if it exists.  Otherwise, simply take the first
             # paragraph of the post.
             summary = None
-            if re.search(SUMMARY_DELIM, contents):  # Use delimiter
-                summary = contents.split(SUMMARY_DELIM)[0]
-                contents = re.sub(SUMMARY_DELIM, '', contents)
+            if re.search(SUMMARY_DELIMITER, contents):  # Use delimiter
+                summary = contents.split(SUMMARY_DELIMITER)[0]
+                contents = re.sub(SUMMARY_DELIMITER, '', contents)
             else:                                   # Use first paragraph
                 summary = re.split(r'''[\r\n]{2}''', contents)[0]
             html_summary = markdown(summary)
@@ -152,6 +152,7 @@ def index(page=0):
             KEY_LIST[page * POSTS_PER_PAGE:(page + 1) * POSTS_PER_PAGE]]
 
     return {'title': TITLE,
+            'subtitle': SUBTITLE,
             'page': page,
             'posts': posts,
             'has_prev': (page > 0),
@@ -197,7 +198,7 @@ def error404(code=None):
 
 
 process_blog_posts()
-if HEROKU:
+if USE_HEROKU:
     run(host="0.0.0.0", port=int(os.environ.get("PORT", 80)))
 else:
     run(host="localhost", port=8080)
