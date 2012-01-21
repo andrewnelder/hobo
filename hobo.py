@@ -11,16 +11,17 @@ import logging
 import re
 import os
 import datetime
+from collections import namedtuple
 
 import blog_config
-
-from lib.blogpost import BlogPost
 from lib.markdown2 import markdown
 from lib.bottle import route, run, view, template, error, static_file, abort
 
 
 # I N I T I A L I Z A T I O N #################################################
 
+# Named tuple pseudo-class
+BlogPost = namedtuple('BlogPost', 'date, meta, summary, contents, locator')
 
 # Logger
 ch = logging.StreamHandler()
@@ -30,12 +31,11 @@ LOGGER.addHandler(ch)
 
 # Regular Expressions
 RE_VALID_FILE_EXTENSIONS = re.compile(r'''(?:.md|.markdown|.txt)$''')
-RE_ARTICLE_TITLE = re.compile(r'''(?:\:title )(.*?)[\n\r]''')
-RE_ARTICLE_AUTHOR = re.compile(r'''(?:\:author )(.*?)[\n\r]''')
 
 # Constants
 POSTS = {}
 KEY_LIST = []
+METADATA_TAGS = ['title', 'author']
 
 # Configuration Parameters w/ Defaults
 TITLE = blog_config.TITLE \
@@ -97,8 +97,12 @@ def process_blog_posts():
             slug = RE_VALID_FILE_EXTENSIONS.sub('', slug)
 
             # Extract metadata
-            contents, meta = extract_metadata(contents, \
-                    defaults={'article_title': slug, 'article_author': AUTHOR})
+            meta = {'title': slug, 'author': AUTHOR}
+            for tag in METADATA_TAGS:
+                re_meta = re.compile(r'''(?:\:%s )(.*?)[\n\r]''' % tag)
+                if re_meta.search(contents):
+                    meta[tag] = re_meta.findall(contents)[0]
+                    contents = re_meta.sub('', contents)
 
             # Strip the contents of supurfluous whitespace -- now that the
             # metatags have been removed.
@@ -123,8 +127,7 @@ def process_blog_posts():
             POSTS[locator] = \
                 BlogPost(\
                     date=datetime.date(yy, mm, dd),\
-                    title=meta['article_title'],\
-                    author=meta['article_author'],\
+                    meta=meta,\
                     summary=html_summary,\
                     contents=html_contents,\
                     locator=locator\
@@ -135,47 +138,6 @@ def process_blog_posts():
 
     KEY_LIST.extend(POSTS.keys())
     KEY_LIST.sort(reverse=True)
-
-
-def extract_metadata(contents, defaults={}):
-    '''
-    Extracts the metadata from the top of a blog post's file contents.
-
-    @param contents:
-        The flatfile contents of a blog post from the post directory.
-    @type contents:
-        String
-
-    @param defaults:
-        Defaults for the metadata.
-    @type defaults:
-        Dictionary
-
-    @return:
-        The modified contents of the blog post and the metadata.
-    @rtype:
-        String, Dictionary
-    '''
-
-    meta = {}
-
-    # Populate with blanks (if needed)
-    meta['article_title'] = ''
-    meta['article_author'] = ''
-
-    # Repopulate with defaults
-    meta.update(defaults)
-
-    # Find metadata in contents and filter contents
-    if RE_ARTICLE_TITLE.search(contents):
-        meta['article_title'] = RE_ARTICLE_TITLE.findall(contents)[0]
-        contents = RE_ARTICLE_TITLE.sub('', contents)
-
-    if RE_ARTICLE_AUTHOR.search(contents):
-        meta['article_author'] = RE_ARTICLE_AUTHOR.findall(contents)[0]
-        contents = RE_ARTICLE_AUTHOR.sub('', contents)
-
-    return contents, meta
 
 
 # P A G E   R O U T I N G #####################################################

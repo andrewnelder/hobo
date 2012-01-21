@@ -10,10 +10,10 @@
 % for post in posts:
   <div class="post">
     <div class="post-title">
-      <a href="{{post.locator}}">{{post.title}}</a>
+      <a href="{{post.locator}}">{{post.meta['title']}}</a>
     </div>
     <div class="post-date">{{post.date.strftime('%B %d, %Y')}}</div>
-    <div class="post-author">{{post.author}}</div>
+    <div class="post-author">{{post.meta['author']}}</div>
     <div class="post-summary">
       {{!post.summary}}
       <div class="post-more-link">

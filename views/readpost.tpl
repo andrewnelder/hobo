@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{{title}}: {{post.title}}</title>
+  <title>{{title}}: {{post.meta['title']}}</title>
   <link href="/static/styles/theballoonist.css" media="screen" rel="stylesheet" type="text/css" />
 </head>
 <body>
@@ -11,9 +11,9 @@
 <div id="blog-title"><a href="/">{{title}}</a></div>
 
 <div class="post">
-  <div class="post-title">{{post.title}}</div>
+  <div class="post-title">{{post.meta['title']}}</div>
   <div class="post-date">{{post.date.strftime('%B %d, %Y')}}</div>
-  <div class="post-author">{{post.author}}</div>
+  <div class="post-author">{{post.meta['author']}}</div>
   <div class="post-body">{{!post.contents}}</div>
 </div>
 
