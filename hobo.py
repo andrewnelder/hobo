@@ -35,17 +35,18 @@ RE_VALID_FILE_EXTENSIONS = re.compile(r'''(?:.md|.markdown|.txt)$''')
 # Constants
 POSTS = {}
 KEY_LIST = []
-METADATA_TAGS = ['title', 'author']
 
 # Configuration Parameters w/ Defaults
 TITLE = blog_config.TITLE \
         if hasattr(blog_config, 'TITLE') else ''
 SUBTITLE = blog_config.SUBTITLE \
         if hasattr(blog_config, 'SUBTITLE') else ''
-POSTS_PER_PAGE = blog_config.POSTS_PER_PAGE \
-        if hasattr(blog_config, 'POSTS_PER_PAGE') else 15
 AUTHOR = blog_config.AUTHOR \
         if hasattr(blog_config, 'AUTHOR') else ''
+METADATA_TAGS = blog_config.METADATA_TAGS \
+        if hasattr(blog_config, 'METADATA_TAGS') else ['title', 'author']
+POSTS_PER_PAGE = blog_config.POSTS_PER_PAGE \
+        if hasattr(blog_config, 'POSTS_PER_PAGE') else 15
 SUMMARY_DELIMITER = blog_config.SUMMARY_DELIMITER \
         if hasattr(blog_config, 'SUMMARY_DELIMITER') else '~~'
 USE_HEROKU = blog_config.USE_HEROKU \

@@ -3,6 +3,7 @@
 TITLE = "The Littlest Blog"
 SUBTITLE = ""
 AUTHOR = "Terry Bush"
+METADATA_TAGS = ['title', 'author']
 
 # POSTS_PER_PAGE
 # The number of posts that will appear on each page of index.html
