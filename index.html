@@ -3,8 +3,44 @@
 <head>
   <title>The Littlest Blog Engine</title>
   <link href="theballoonist.css" media="screen" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+    .myButton {
+      -moz-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+      -webkit-box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+      box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+      background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5) );
+      background:-moz-linear-gradient( center top, #79bbff 5%, #378de5 100% );
+      filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5');
+      background-color:#79bbff;
+      -moz-border-radius:10px;
+      -webkit-border-radius:10px;
+      border-radius:10px;
+      border:1px solid #84bbf3;
+      display:inline-block;
+      color:#ffffff;
+      font-family:arial;
+      font-size:21px;
+      font-weight:bold;
+      padding:6px 24px;
+      text-decoration:none;
+      text-shadow:1px 2px 0px #528ecc;
+      margin-left: auto;
+      margin-right: auto;
+    }.myButton:hover {
+      background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff) );
+      background:-moz-linear-gradient( center top, #378de5 5%, #79bbff 100% );
+      filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff');
+      background-color:#378de5;
+    }.myButton:active {
+      position:relative;
+      top:1px;
+    }
+  </style>
 </head>
 <body>
+
+<a href="http://github.com/andrewnelder/hobo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+
 <div id="body-wrapper">
 
   <h1 align="center" style="font-family: 'Oldenburg', cursive; font-weight: bold; font-size: 3em; margin: 20px;">Hobo</h1>
@@ -12,6 +48,7 @@
   <p>Hobo is an ultra-lightweight blog engine written in Python. It has two dependencies, fully integrated into the codebase with no additional downloads: bottle.py and markdown2. Because of this fact, it is extremely customizable and can be extended to incorporate all kinds of scripts designed for the very popular bottle.py web framework.</p>
   <p>Hobo is based on the wonderful software designed by Alexis Sellier named toto, written in Ruby. Additionally, special thanks goes to clownfart for his amazing work on markdown.css which was used as a framework for the primary css-theme.</p>
   <p>The name Hobo is the name of the canine protagonist from The Littlest Hobo.</p>
+  <a href="https://github.com/andrewnelder/hobo/zipball/master" class="myButton">Download</a>
 
 </div>
 </body>
