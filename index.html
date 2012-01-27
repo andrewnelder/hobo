@@ -44,11 +44,35 @@
 <div id="body-wrapper">
 
   <h1 align="center" style="font-family: 'Oldenburg', cursive; font-weight: bold; font-size: 3em; margin: 20px;">Hobo</h1>
-  <img src="hobo.jpg" style="display: block; margin-left: auto; margin-right: auto;" />
+  <img src="hobo.jpg" style="display: block; margin-left: auto; margin-right: auto;" alt="Portrait of The Littlest Hobo" />
   <p>Hobo is an ultra-lightweight blog engine written in Python. It has two dependencies, fully integrated into the codebase with no additional downloads: bottle.py and markdown2. Because of this fact, it is extremely customizable and can be extended to incorporate all kinds of scripts designed for the very popular bottle.py web framework.</p>
-  <p>Hobo is based on the wonderful software designed by Alexis Sellier named toto, written in Ruby. Additionally, special thanks goes to clownfart for his amazing work on markdown.css which was used as a framework for the primary css-theme.</p>
+  <p>Hobo is based on the wonderful software designed by Alexis Sellier named <a href="http://www.cloudhead.io/toto">toto</a>, written in Ruby. Additionally, special thanks goes to <a href="http://www.github.com/clownfart">clownfart</a> for his amazing work on <a href="https://github.com/clownfart/Markdown-CSS">markdown.css</a> which was used as a framework for the primary css-theme.</p>
   <p>The name Hobo is the name of the canine protagonist from The Littlest Hobo.</p>
+  <hr />
+  <p>The code is designed to be deployed on <a href="http://www.heroku.com/">Heroku</a> and is powered by git.  Give it a try and <a href="http://andrewnelder-blog.heroku.com/">see it in action</a>!</p>
+  <code>
+    $ git clone git@github.com:andrewnelder/hobo.git personal-blog
+    $ cd personal-blog
+    $ heroku create --stack cedar personal-blog
+    $ git push heroku master
+  </code>
+  <hr />
+  <h3>Features</h3>
+    <ul>
+      <li>About 300kb in size.
+      <li>No extra dependencies or installations.
+      <li>Easy to deploy.
+      <li>No knowledge of HTML necessary.
+      <li>Pre-packaged with a stylish theme called theballoonist.css.
+      <li>No databases.
+      <li>Easily modified templates that use SimpleTemplate included in the /views directory.
+      <li>Out-of-the-box support for pagination (15-posts per page by default).
+      <li>Supports plain-text, html, or markdown.
+      <li>Supports static file serving (images, videos, documents, etc.).
+    </ul>
   <p align="center"><a href="https://github.com/andrewnelder/hobo/zipball/master" class="myButton">Download</a></p>
+  <br /><br />
+  <small>Copyright (c) 2012 Andrew Nelder. Licensed under the MIT License.</small>
 
 </div>
 </body>
